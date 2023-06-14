@@ -39,26 +39,6 @@ export default function AuthNavigators () {
                     // ...TransitionPreset.RevealFromBottomAndroid
                 }}
              />
-              <AuthStack.Screen
-                // name="HomeScreen"
-                // name='RootClientTabs'
-                // component={HomeScreen}
-                //  component={RootClientTab}
-                name='drawerNavigator'
-                component={DrawerNavigartor}
-                options={{
-                    headerShown:false,
-                    // ...TransitionPreset.RevealFromBottomAndroid
-                }}
-             />
-              <AuthStack.Screen
-                name='restaurantmapScreen'
-                 component={RestaurantMapScreen}
-                options={{
-                    headerShown:false,
-                    // ...TransitionPreset.RevealFromBottomAndroid
-                }}
-             />
         </AuthStack.Navigator>
     )
 }

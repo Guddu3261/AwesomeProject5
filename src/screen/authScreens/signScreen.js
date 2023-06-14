@@ -1,34 +1,43 @@
 import { View, Text,StyleSheet,TextInput, Alert } from 'react-native'
-import React,{useState,useRef} from 'react';
+import React,{useState,useRef, useEffect, useContext} from 'react';
 import {colors,parameters} from "../../global/styles";
 import { Icon,Button,SocialIcon} from 'react-native-elements';
 import Header from '../../Components/Header';
 import { title } from '../../global/styles';
 import * as Animatable from 'react-native-animatable';
 import { Formik } from 'formik';
-import auth from '@react-native-firebase/auth'
-
+import auth from '@react-native-firebase/auth';
+import { SignInContext } from '../../contexts/AuthContext';
 export default function SignScreen({navigation,props}){
+    const {dispatchSignedIn} = useContext(SignInContext)
     const [passwordFieldFocus,setPasswordFieldFocus]=useState(false);
     const textinput1=useRef(1);
     const textinput2=useRef(2);
+    const [visible, setVisible] = useState(false);
+    useEffect(() => {
+        setInterval(() => {
+          setVisible(!visible);
+        }, 2000);
+      }, []);
 
-    async function sigin (data){
-  
-    // const {email, password} = data;
-    const user= await auth().signInWithEmailAndPassword(data.email, data.password).then((res)=>{
-            console.log(res)
-            alert('successfully login')
-    }).catch((error)=>{
-        Alert.alert(
-            error.name,
-            error.message,
-        )
-    })
-  
+      async function sigin(data){
+        try{
+        const {password,email} = data
+        const user = await auth().signInWithEmailAndPassword(email,password)
+        if(user){
+            dispatchSignedIn({type:"UPDATE_SIGN_IN",payload:{userToken:"signed-in"}})
+        }
+    }
+        catch(error){
+            Alert.alert(
+                error.name,
+                error.message
+            )
+        }
+    }
     
 
-    }
+  
     return (
         <View>
            <Header title="My Account" type="arrow-left" navigation={navigation} />
@@ -147,6 +156,7 @@ export default function SignScreen({navigation,props}){
         </View>
     )
 }
+
 const styles = StyleSheet.create({
     container:{
         flex:1,
@@ -194,4 +204,8 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         marginTop:-3,
     },
+    lottie: {
+        width: 100,
+        height: 100,
+      },
 })
