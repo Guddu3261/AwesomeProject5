@@ -6,7 +6,8 @@ import {
     Pressable,
     Alert,
     Switch,
-    StyleSheet
+    StyleSheet,
+    TouchableOpacity
 } from 'react-native'
 
 import {
@@ -18,10 +19,21 @@ import {
 } from '@react-navigation/drawer'
 import { Avatar, Icon } from 'react-native-elements';
 import { colors } from '../global/styles';
+import auth from '@react-native-firebase/auth';
 
 export default function DrawerContent(props,navigation){
     const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+  async function signOut(){
+    try{
+         auth().signOut().then(()=>{
+          console.log('successfully Signed out.')
+         })
+    }catch(error){
+      Alert.alert(error.code)
+    }
+  }
     return(
         <View style={styles.container} >
         <DrawerContentScrollView {...props}>
@@ -123,7 +135,8 @@ export default function DrawerContent(props,navigation){
           </View>
 
           </DrawerContentScrollView>
-          <DrawerItem
+           <TouchableOpacity   >
+           <DrawerItem
               label='Sign Out'
             //   onPress={()=>navigation.navigation('signScreen')}
               icon={({color,size})=>(
@@ -132,9 +145,13 @@ export default function DrawerContent(props,navigation){
                     name='logout'
                     color={color}
                     size={size}
+                    onPress={()=>{
+                      signOut()
+                    }}
                 />
               )}
           />
+           </TouchableOpacity>
           
         </View>
     )

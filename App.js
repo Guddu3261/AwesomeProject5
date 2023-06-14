@@ -7,6 +7,7 @@ import SigninWelcomeScreen from './src/screen/authScreens/SigninWelcomeScreen';
 import RootNavigators from './src/navigation/RootNavigators';
 import OtpScreen from './src/screen/OtpScreen';
 import messaging from '@react-native-firebase/messaging';
+import { SignInContextProvider } from './src/contexts/AuthContext';
 export default function App(){
 
 
@@ -22,6 +23,7 @@ const checkToken = async () => {
  }
  
   return (
+     <SignInContextProvider>
     <View style={styles.container} >
 
     <StatusBar
@@ -33,6 +35,7 @@ const checkToken = async () => {
         <RootNavigators/>
         {/* <OtpScreen/> */}
     </View>
+    </SignInContextProvider> 
   );
 }
 
